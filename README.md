@@ -19,7 +19,7 @@ class Todolist extends Backbone.Model
   @hasMany "todos"
 ```
 
-Defines a `todos` method on instances of `Todolist` (`Todolist.prototype`) that returns a new `Backbone.Collection` of the same type (e.g. `MyApp.collections.Todos`) containing `Todo` models with a `todolist_id` attribute matching the `Todolist` model's `id`. The bootstrapped collection is expected at `Backbone.DB.todos`.
+Defines a `todos` method on instances of `Todolist` (`Todolist.prototype`) that returns a new `Backbone.Collection` of the same type (e.g. `MyApp.collections.Todos`) containing `Todo` models with a `todolist_id` attribute matching the `Todolist` model's `id`. Expects a `Todo` model collection defined on the `todos` property of the registered object.
 
 #### ♥︎ Model.hasMany with `foreignKey` option
 
@@ -46,7 +46,7 @@ class Todo extends Backbone.Model
   @belongsTo "todolist"
 ```
 
-Defines a `todolist` method that returns the `Todo` model with `todolist_id` attribute matching the `Todolist` model's `id`. Expects the bootstrapped collection at `Backbone.DB.todolists`.
+Defines a `todolist` method that returns the `Todo` model with `todolist_id` attribute matching the `Todolist` model's `id`. Expects a `Todolist` model collection defined on the `todolists` property of the registered object.
 
 ##### ♥︎ Model.belongsTo with `modelName` option
 
@@ -55,7 +55,7 @@ class Comment extends Backbone.Model
   @belongsTo "creator", modelName: "User"
 ```
 
-Defines a `creator` method that returns the `User` model with an `id` matching the `Comment` model's `creator_id` attribute. Expects the bootstrapped `User` collection at `Backbone.DB.users`.
+Defines a `creator` method that returns the `User` model with an `id` matching the `Comment` model's `creator_id` attribute. Expects a `User` model collection defined on the `users` property of the registered object.
 
 ##### ♥︎ Model.belongsTo with `polymorphic` option
 
