@@ -1,0 +1,27 @@
+{
+  "name": "backbone-with-benefits",
+  "version": "0.1.0",
+  "description": "Casual relationships for Backbone models",
+  "main": "backbone-with-benefits.js",
+  "author": "Javan Makhmali <javan@javan.us> (http://javan.us)",
+  "license": "MIT",
+  "keywords": ["backbone", "relationship", "association", "collection", "model", "hasMany", "belongsTo"],
+  "homepage": "https://github.com/javan/backbone-with-benefits",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/javan/backbone-with-benefits.git"
+  },
+  "dependencies": {
+    "backbone": ">=0.9.2"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-coffee": "~0.4.0",
+    "grunt-banner": "~0.2.2"
+  },
+  "scripts": {
+    "test": "grunt"
+  }
+}
