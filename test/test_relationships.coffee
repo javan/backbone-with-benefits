@@ -50,3 +50,15 @@ test "belongsTo with modelName option", ->
 
 test "belongsTo with polymorphic option", ->
   @equal App.comments.get(1).commentable(), App.todos.get(2)
+
+
+test "belongsTo with blank association attributes", ->
+  todo = App.todos.get(1)
+  todo.unset("todolist_id")
+  @equal todo.todolist(), null
+
+  comment = App.comments.get(1)
+  comment.unset("commentable_type")
+  comment.unset("commentable_id")
+  @equal comment.commentable(), null
+

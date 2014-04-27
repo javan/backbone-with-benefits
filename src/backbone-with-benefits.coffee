@@ -42,7 +42,8 @@ _.extend Backbone.Model,
           collectionName = associationName
           foreignKey = getForeignKey(associationName)
 
-      findCollection(collectionName).get(@get(foreignKey))
+      if collectionName? and foreignKey?
+        findCollection(collectionName).get(@get(foreignKey))
 
 
 # Helpers

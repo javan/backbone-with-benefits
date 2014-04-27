@@ -61,7 +61,9 @@
             collectionName = associationName;
             foreignKey = getForeignKey(associationName);
         }
-        return findCollection(collectionName).get(this.get(foreignKey));
+        if ((collectionName != null) && (foreignKey != null)) {
+          return findCollection(collectionName).get(this.get(foreignKey));
+        }
       };
     }
   });
