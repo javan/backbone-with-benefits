@@ -54,5 +54,5 @@ App.comments =
     { id: 1, creator_id: 1, commentable_type: "Todo", commentable_id: 2 }
   ]
 
-exports App = App
+exports.App = App
 exports.Backbone = Backbone
