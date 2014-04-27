@@ -19,7 +19,15 @@ class Todolist extends Backbone.Model
   @hasMany "todos"
 ```
 
-Defines a `todos` method on instances of `Todolist` (`Todolist.prototype`) that returns a new `Backbone.Collection` of the same type (e.g. `MyApp.collections.Todos`) containing `Todo` models with a `todolist_id` attribute matching the `Todolist` model's `id`. Expects a `Todo` model collection defined on the `todos` property of the registered object.
+```
+〉todolist.todos()
+  ‣ Todos {length: 4, models: Array[4], ...}
+
+〉todolist.todos().toArray()
+ [‣ Todo, ‣ Todo, ‣ Todo, ‣ Todo]
+```
+
+Defines a `todos` method on instances of `Todolist` (`Todolist.prototype`) that returns a new `Backbone.Collection` of the same type (e.g. `MyApp.collections.Todos`) containing `Todo` models with a `todolist_id` attribute matching the `Todolist` model's `id`. Expects a collection of `Todo` models defined on the `todos` property of the registered object (e.g. `MyApp.todos`).
 
 #### ♥︎ Model.hasMany with `foreignKey` option
 
