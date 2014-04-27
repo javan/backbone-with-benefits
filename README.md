@@ -39,7 +39,7 @@ class Todo extends Backbone.Model
 
 Defines a `comments` method that returns a collection of `Comment` models with a `commentable_type` attribute of "Todo" and a `commentable_id` attribute matching the `Todo` model's `id`.
 
-##### ♥︎ Model.belongsTo
+#### ♥︎ Model.belongsTo
 
 ```coffee
 class Todo extends Backbone.Model
@@ -48,7 +48,7 @@ class Todo extends Backbone.Model
 
 Defines a `todolist` method that returns the `Todo` model with `todolist_id` attribute matching the `Todolist` model's `id`. Expects a `Todolist` model collection defined on the `todolists` property of the registered object.
 
-##### ♥︎ Model.belongsTo with `modelName` option
+#### ♥︎ Model.belongsTo with `modelName` option
 
 ```coffee
 class Comment extends Backbone.Model
@@ -57,7 +57,7 @@ class Comment extends Backbone.Model
 
 Defines a `creator` method that returns the `User` model with an `id` matching the `Comment` model's `creator_id` attribute. Expects a `User` model collection defined on the `users` property of the registered object.
 
-##### ♥︎ Model.belongsTo with `polymorphic` option
+#### ♥︎ Model.belongsTo with `polymorphic` option
 
 ```coffee
 class Comment extends Backbone.Model
