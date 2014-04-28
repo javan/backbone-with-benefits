@@ -10,7 +10,7 @@ Backbone.Benefits =
 
 
 _.extend Backbone.Model,
-  hasMany: (collectionName, {foreignKey, as} = {}) ->
+  hasMany: (collectionName, {foreignKey, as, through} = {}) ->
     @::[decapitalize(collectionName)] = (collectionOptions) ->
       modelName = getModelName(@constructor)
       conditions = {}
@@ -26,7 +26,13 @@ _.extend Backbone.Model,
           conditions[foreignKey] = @id
 
       collection = findCollection(collectionName)
-      models = collection.where(conditions)
+
+      models =
+        if through?
+          @[through]().invoke(singularize(collectionName))
+        else
+          collection.where(conditions)
+
       new collection.constructor models, collectionOptions
 
   belongsTo: (associationName, {modelName, polymorphic} = {}) ->

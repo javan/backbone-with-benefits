@@ -27,6 +27,11 @@ test "hasMany with 'as' option", ->
   @deepEqual comments.pluck("id"), [1]
 
 
+test "hasMany with 'through' option", ->
+  projects = App.users.get(1).projects()
+  @deepEqual projects.pluck("id"), [1]
+
+
 test "model changes in a hasMany filtered collection", ->
   changed = false
   App.todos.on("change", -> changed = true)

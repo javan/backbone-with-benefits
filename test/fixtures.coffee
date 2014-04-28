@@ -26,9 +26,23 @@ class App.collections.Comments extends Backbone.Collection
 
 class App.models.User extends Backbone.Model
   @hasMany "comments", foreignKey: "creator_id"
+  @hasMany "accesses"
+  @hasMany "projects", through: "accesses"
 
 class App.collections.Users extends Backbone.Collection
   model: App.models.User
+
+class App.models.Access extends Backbone.Model
+  @belongsTo "user"
+  @belongsTo "project"
+
+class App.collections.Accesses extends Backbone.Collection
+  model: App.models.Access
+
+class App.models.Project extends Backbone.Model
+
+class App.collections.Projects extends Backbone.Collection
+  model: App.models.Project
 
 
 App.todolists =
@@ -52,6 +66,17 @@ App.users =
 App.comments =
   new App.collections.Comments [
     { id: 1, creator_id: 1, commentable_type: "Todo", commentable_id: 2 }
+  ]
+
+App.accesses =
+  new App.collections.Accesses [
+    { user_id: 1, project_id: 1 }
+  ]
+
+App.projects =
+  new App.collections.Projects [
+    { id: 1 },
+    { id: 2 }
   ]
 
 exports.App = App
