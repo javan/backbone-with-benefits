@@ -10,26 +10,27 @@ Backbone.Benefits =
 
 
 _.extend Backbone.Model,
-  hasMany: (collectionName, {foreignKey, as, through} = {}) ->
-    @::[decapitalize(collectionName)] = (collectionOptions) ->
-      modelName = getModelName(@constructor)
-      conditions = {}
+  hasMany: (associationName, {foreignKey, as, through, conditions, modelName, collectionName} = {}) ->
+    @::[decapitalize(associationName)] = (collectionOptions) ->
+      collectionName ?= modelName ? associationName
+      conditions ?= {}
+
+      thisModelName = getModelName(@constructor)
+      collection = findCollection(collectionName)
 
       switch
         when foreignKey
           conditions[foreignKey] = @id
         when as
-          conditions["#{as}_type"] = modelName
+          conditions["#{as}_type"] = thisModelName
           conditions["#{as}_id"] = @id
         else
-          foreignKey = getForeignKey(modelName)
+          foreignKey = getForeignKey(thisModelName)
           conditions[foreignKey] = @id
-
-      collection = findCollection(collectionName)
 
       models =
         if through?
-          @[through]().invoke(singularize(collectionName))
+          _(@[through]().where(conditions)).invoke(singularize(collectionName))
         else
           collection.where(conditions)
 

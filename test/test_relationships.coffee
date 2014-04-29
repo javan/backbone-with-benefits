@@ -17,6 +17,21 @@ test "hasMany", ->
   @deepEqual todos.pluck("id"), [3]
 
 
+test "hasMany with 'modelName' option", ->
+  todos = App.todolists.get(2).items()
+  @deepEqual todos.pluck("id"), [3]
+
+
+test "hasMany with 'collectionName' option", ->
+  todos = App.todolists.get(2).tasks()
+  @deepEqual todos.pluck("id"), [3]
+
+
+test "hasMany with 'conditions' option", ->
+  todos = App.todolists.get(1).importantTodos()
+  @deepEqual todos.pluck("id"), [2]
+
+
 test "hasMany with foreignKey option", ->
   comments = App.users.get(1).comments()
   @deepEqual comments.pluck("id"), [1]
@@ -30,6 +45,11 @@ test "hasMany with 'as' option", ->
 test "hasMany with 'through' option", ->
   projects = App.users.get(1).projects()
   @deepEqual projects.pluck("id"), [1]
+
+
+test "hasMany with 'through' and 'conditions' options", ->
+  projects = App.users.get(2).adminProjects()
+  @deepEqual projects.pluck("id"), [2]
 
 
 test "model changes in a hasMany filtered collection", ->

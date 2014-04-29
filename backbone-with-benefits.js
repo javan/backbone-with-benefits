@@ -19,27 +19,32 @@
   };
 
   _.extend(Backbone.Model, {
-    hasMany: function(collectionName, _arg) {
-      var as, foreignKey, _ref;
-      _ref = _arg != null ? _arg : {}, foreignKey = _ref.foreignKey, as = _ref.as;
-      return this.prototype[decapitalize(collectionName)] = function(collectionOptions) {
-        var collection, conditions, modelName, models;
-        modelName = getModelName(this.constructor);
-        conditions = {};
+    hasMany: function(associationName, _arg) {
+      var as, collectionName, conditions, foreignKey, modelName, through, _ref;
+      _ref = _arg != null ? _arg : {}, foreignKey = _ref.foreignKey, as = _ref.as, through = _ref.through, conditions = _ref.conditions, modelName = _ref.modelName, collectionName = _ref.collectionName;
+      return this.prototype[decapitalize(associationName)] = function(collectionOptions) {
+        var collection, models, thisModelName;
+        if (collectionName == null) {
+          collectionName = modelName != null ? modelName : associationName;
+        }
+        if (conditions == null) {
+          conditions = {};
+        }
+        thisModelName = getModelName(this.constructor);
+        collection = findCollection(collectionName);
         switch (false) {
           case !foreignKey:
             conditions[foreignKey] = this.id;
             break;
           case !as:
-            conditions["" + as + "_type"] = modelName;
+            conditions["" + as + "_type"] = thisModelName;
             conditions["" + as + "_id"] = this.id;
             break;
           default:
-            foreignKey = getForeignKey(modelName);
+            foreignKey = getForeignKey(thisModelName);
             conditions[foreignKey] = this.id;
         }
-        collection = findCollection(collectionName);
-        models = collection.where(conditions);
+        models = through != null ? _(this[through]().where(conditions)).invoke(singularize(collectionName)) : collection.where(conditions);
         return new collection.constructor(models, collectionOptions);
       };
     },

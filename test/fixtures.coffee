@@ -6,6 +6,9 @@ App =
 
 class App.models.Todolist extends Backbone.Model
   @hasMany "todos"
+  @hasMany "items", modelName: "Todo"
+  @hasMany "tasks", collectionName: "todos"
+  @hasMany "importantTodos", modelName: "todo", conditions: { important: true }
 
 class App.collections.Todolists extends Backbone.Collection
   model: App.models.Todolist
@@ -28,6 +31,7 @@ class App.models.User extends Backbone.Model
   @hasMany "comments", foreignKey: "creator_id"
   @hasMany "accesses"
   @hasMany "projects", through: "accesses"
+  @hasMany "adminProjects", through: "accesses", collectionName: "projects", conditions: { admin: true }
 
 class App.collections.Users extends Backbone.Collection
   model: App.models.User
@@ -54,13 +58,14 @@ App.todolists =
 App.todos =
   new App.collections.Todos [
     { id: 1, todolist_id: 1 }
-    { id: 2, todolist_id: 1 }
-    { id: 3, todolist_id: 2 }
+    { id: 2, todolist_id: 1, important: true }
+    { id: 3, todolist_id: 2, important: true }
   ]
 
 App.users =
   new App.collections.Users [
     { id: 1 }
+    { id: 2 }
   ]
 
 App.comments =
@@ -71,6 +76,8 @@ App.comments =
 App.accesses =
   new App.collections.Accesses [
     { user_id: 1, project_id: 1 }
+    { user_id: 2, project_id: 1 }
+    { user_id: 2, project_id: 2, admin: true }
   ]
 
 App.projects =
