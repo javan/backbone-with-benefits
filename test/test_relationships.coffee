@@ -73,6 +73,10 @@ test "belongsTo with modelName option", ->
   @equal App.comments.get(1).creator(), App.users.get(1)
 
 
+test "belongsTo with 'collectionName' option", ->
+  @equal App.todos.get(1).list(), App.todolists.get(1)
+
+
 test "belongsTo with polymorphic option", ->
   @equal App.comments.get(1).commentable(), App.todos.get(2)
 

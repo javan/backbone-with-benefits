@@ -49,14 +49,19 @@
       };
     },
     belongsTo: function(associationName, _arg) {
-      var modelName, polymorphic, _ref;
-      _ref = _arg != null ? _arg : {}, modelName = _ref.modelName, polymorphic = _ref.polymorphic;
+      var collectionName, modelName, polymorphic, _ref;
+      _ref = _arg != null ? _arg : {}, polymorphic = _ref.polymorphic, modelName = _ref.modelName, collectionName = _ref.collectionName;
       return this.prototype[decapitalize(associationName)] = function() {
-        var collectionName, foreignKey;
+        var foreignKey;
         switch (false) {
           case !polymorphic:
             collectionName = this.get("" + associationName + "_type");
             foreignKey = "" + associationName + "_id";
+            break;
+          case !collectionName:
+            if (foreignKey == null) {
+              foreignKey = getForeignKey(collectionName);
+            }
             break;
           case !modelName:
             collectionName = modelName;

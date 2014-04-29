@@ -15,6 +15,7 @@ class App.collections.Todolists extends Backbone.Collection
 
 class App.models.Todo extends Backbone.Model
   @belongsTo "todolist"
+  @belongsTo "list", collectionName: "todolists"
   @hasMany "comments", as: "commentable"
 
 class App.collections.Todos extends Backbone.Collection
