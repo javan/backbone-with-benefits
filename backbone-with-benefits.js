@@ -32,27 +32,31 @@
         }
         thisModelName = getModelName(this.constructor);
         collection = findCollection(collectionName);
-        switch (false) {
-          case !foreignKey:
-            conditions[foreignKey] = this.id;
-            break;
-          case !as:
-            conditions["" + as + "_type"] = thisModelName;
-            conditions["" + as + "_id"] = this.id;
-            break;
-          default:
-            foreignKey = getForeignKey(thisModelName);
-            conditions[foreignKey] = this.id;
-        }
         if (through != null) {
           if (source == null) {
             source = singularize(collectionName);
           }
-          models = _(this[through]().where(conditions)).invoke(source);
+          if (_.isEmpty(conditions)) {
+            models = _(this[through]().toArray()).invoke(source);
+          } else {
+            models = _(this[through]().where(conditions)).invoke(source);
+          }
           if (collection == null) {
             collection = (_ref1 = models[0]) != null ? _ref1.collection : void 0;
           }
         } else {
+          switch (false) {
+            case !foreignKey:
+              conditions[foreignKey] = this.id;
+              break;
+            case !as:
+              conditions["" + as + "_type"] = thisModelName;
+              conditions["" + as + "_id"] = this.id;
+              break;
+            default:
+              foreignKey = getForeignKey(thisModelName);
+              conditions[foreignKey] = this.id;
+          }
           models = collection.where(conditions);
         }
         return new collection.constructor(models, collectionOptions);
@@ -71,7 +75,9 @@
             if (collectionName == null) {
               collectionName = modelName;
             }
-            foreignKey = getForeignKey(associationName);
+            if (foreignKey == null) {
+              foreignKey = getForeignKey(associationName);
+            }
             break;
           default:
             if (collectionName == null) {

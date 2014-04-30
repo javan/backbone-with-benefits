@@ -18,21 +18,24 @@ _.extend Backbone.Model,
       thisModelName = getModelName(@constructor)
       collection = findCollection(collectionName)
 
-      switch
-        when foreignKey
-          conditions[foreignKey] = @id
-        when as
-          conditions["#{as}_type"] = thisModelName
-          conditions["#{as}_id"] = @id
-        else
-          foreignKey = getForeignKey(thisModelName)
-          conditions[foreignKey] = @id
-
       if through?
         source ?= singularize(collectionName)
-        models = _(@[through]().where(conditions)).invoke(source)
+        if _.isEmpty(conditions)
+          models = _(@[through]().toArray()).invoke(source)
+        else
+          models = _(@[through]().where(conditions)).invoke(source)
         collection ?= models[0]?.collection
       else
+        switch
+          when foreignKey
+            conditions[foreignKey] = @id
+          when as
+            conditions["#{as}_type"] = thisModelName
+            conditions["#{as}_id"] = @id
+          else
+            foreignKey = getForeignKey(thisModelName)
+            conditions[foreignKey] = @id
+
         models = collection.where(conditions)
 
       new collection.constructor models, collectionOptions
