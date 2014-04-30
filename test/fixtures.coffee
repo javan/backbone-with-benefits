@@ -45,6 +45,8 @@ class App.collections.Accesses extends Backbone.Collection
   model: App.models.Access
 
 class App.models.Project extends Backbone.Model
+  @hasMany "accesses"
+  @hasMany "people", through: "accesses", source: "user"
 
 class App.collections.Projects extends Backbone.Collection
   model: App.models.Project

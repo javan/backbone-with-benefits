@@ -52,6 +52,11 @@ test "hasMany with 'through' and 'conditions' options", ->
   @deepEqual projects.pluck("id"), [2]
 
 
+test "hasMany with 'through' and 'source' options", ->
+  users = App.projects.get(2).people()
+  @deepEqual users.pluck("id"), [2]
+
+
 test "model changes in a hasMany filtered collection", ->
   changed = false
   App.todos.on("change", -> changed = true)
