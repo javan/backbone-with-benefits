@@ -51,6 +51,18 @@ class App.models.Project extends Backbone.Model
 class App.collections.Projects extends Backbone.Collection
   model: App.models.Project
 
+class App.models.Octopus extends Backbone.Model
+  @hasMany "children"
+
+class App.collections.Octopi extends Backbone.Collection
+  model: App.models.Octopus
+
+class App.models.Child extends Backbone.Model
+  @belongsTo "octopus", collectionName: "octopi", foreignKey: "octopus_id"
+
+class App.collections.Children extends Backbone.Collection
+  model: App.models.Child
+
 
 App.todolists =
   new App.collections.Todolists [
@@ -87,6 +99,16 @@ App.projects =
   new App.collections.Projects [
     { id: 1 },
     { id: 2 }
+  ]
+
+App.octopi =
+  new App.collections.Octopi [
+    { id: 1 }
+  ]
+
+App.children =
+  new App.collections.Children [
+    { id: 1, octopus_id: 1 }
   ]
 
 exports.App = App

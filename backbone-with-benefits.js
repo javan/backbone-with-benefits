@@ -20,10 +20,10 @@
 
   _.extend(Backbone.Model, {
     hasMany: function(associationName, _arg) {
-      var as, collectionName, conditions, foreignKey, modelName, through, _ref;
-      _ref = _arg != null ? _arg : {}, foreignKey = _ref.foreignKey, as = _ref.as, through = _ref.through, conditions = _ref.conditions, modelName = _ref.modelName, collectionName = _ref.collectionName;
+      var as, collectionName, conditions, foreignKey, modelName, source, through, _ref;
+      _ref = _arg != null ? _arg : {}, foreignKey = _ref.foreignKey, as = _ref.as, through = _ref.through, conditions = _ref.conditions, modelName = _ref.modelName, collectionName = _ref.collectionName, source = _ref.source;
       return this.prototype[decapitalize(associationName)] = function(collectionOptions) {
-        var collection, models, thisModelName;
+        var collection, models, thisModelName, _ref1;
         if (collectionName == null) {
           collectionName = modelName != null ? modelName : associationName;
         }
@@ -44,32 +44,42 @@
             foreignKey = getForeignKey(thisModelName);
             conditions[foreignKey] = this.id;
         }
-        models = through != null ? _(this[through]().where(conditions)).invoke(singularize(collectionName)) : collection.where(conditions);
+        if (through != null) {
+          if (source == null) {
+            source = singularize(collectionName);
+          }
+          models = _(this[through]().where(conditions)).invoke(source);
+          if (collection == null) {
+            collection = (_ref1 = models[0]) != null ? _ref1.collection : void 0;
+          }
+        } else {
+          models = collection.where(conditions);
+        }
         return new collection.constructor(models, collectionOptions);
       };
     },
     belongsTo: function(associationName, _arg) {
-      var collectionName, modelName, polymorphic, _ref;
-      _ref = _arg != null ? _arg : {}, polymorphic = _ref.polymorphic, modelName = _ref.modelName, collectionName = _ref.collectionName;
+      var collectionName, foreignKey, modelName, polymorphic, _ref;
+      _ref = _arg != null ? _arg : {}, polymorphic = _ref.polymorphic, foreignKey = _ref.foreignKey, modelName = _ref.modelName, collectionName = _ref.collectionName;
       return this.prototype[decapitalize(associationName)] = function() {
-        var foreignKey;
         switch (false) {
           case !polymorphic:
             collectionName = this.get("" + associationName + "_type");
             foreignKey = "" + associationName + "_id";
             break;
-          case !collectionName:
-            if (foreignKey == null) {
-              foreignKey = getForeignKey(collectionName);
-            }
-            break;
           case !modelName:
-            collectionName = modelName;
+            if (collectionName == null) {
+              collectionName = modelName;
+            }
             foreignKey = getForeignKey(associationName);
             break;
           default:
-            collectionName = associationName;
-            foreignKey = getForeignKey(associationName);
+            if (collectionName == null) {
+              collectionName = associationName;
+            }
+            if (foreignKey == null) {
+              foreignKey = getForeignKey(collectionName);
+            }
         }
         if ((collectionName != null) && (foreignKey != null)) {
           return findCollection(collectionName).get(this.get(foreignKey));

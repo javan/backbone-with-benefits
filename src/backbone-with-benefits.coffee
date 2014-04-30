@@ -37,20 +37,18 @@ _.extend Backbone.Model,
 
       new collection.constructor models, collectionOptions
 
-  belongsTo: (associationName, {polymorphic, modelName, collectionName} = {}) ->
+  belongsTo: (associationName, {polymorphic, foreignKey, modelName, collectionName} = {}) ->
     @::[decapitalize(associationName)] = ->
       switch
         when polymorphic
           collectionName = @get("#{associationName}_type")
           foreignKey = "#{associationName}_id"
-        when collectionName
-          foreignKey ?= getForeignKey(collectionName)
         when modelName
-          collectionName = modelName
-          foreignKey = getForeignKey(associationName)
+          collectionName ?= modelName
+          foreignKey ?= getForeignKey(associationName)
         else
-          collectionName = associationName
-          foreignKey = getForeignKey(associationName)
+          collectionName ?= associationName
+          foreignKey ?= getForeignKey(collectionName)
 
       if collectionName? and foreignKey?
         findCollection(collectionName).get(@get(foreignKey))

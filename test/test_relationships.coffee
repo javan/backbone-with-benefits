@@ -80,6 +80,7 @@ test "belongsTo with modelName option", ->
 
 test "belongsTo with 'collectionName' option", ->
   @equal App.todos.get(1).list(), App.todolists.get(1)
+  @equal App.children.get(1).octopus(), App.octopi.get(1)
 
 
 test "belongsTo with polymorphic option", ->
